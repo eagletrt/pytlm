@@ -1,2 +1,1 @@
-from tlmimporter import LogReader
-from tlmimporter.LogReader import TrackSession
+from tlmimporter.LogReader import *
