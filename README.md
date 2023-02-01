@@ -7,7 +7,7 @@ Python package to ease the import of telemetry track sessions
 Import the package
 
 ```python
-import eagle-tlm-importer
+import tlmimporter
 ```
 
 Load a log folder
