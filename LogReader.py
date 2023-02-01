@@ -22,6 +22,7 @@ class LogSession:
             if x.is_dir():
                 ts = TrackSession(x.resolve())
                 yield ts
+                return
 
     def __repr__(self) -> str:
         return self.name
@@ -41,9 +42,10 @@ class TrackSession:
             raise FileNotFoundError("Not a directory: %s" % path)
 
         print("    Loading track session from disk: %s" % self.name)
-        self.logs = list(self.__get_logs_data())
+        self.logs = self.__get_logs_data()
 
-    def __get_logs_data(self) -> Iterator[pd.DataFrame]:
+    def __get_logs_data(self) -> dict[str, Iterator[pd.DataFrame]]:
+        result = {}
         folder_pri = self.path / 'Parsed' / 'primary'
         folder_sec = self.path / 'Parsed' / 'secondary'
 
@@ -52,21 +54,14 @@ class TrackSession:
 
         for csv_log in folder_pri.iterdir():
             if csv_log.stat().st_size > 2:
-                print('        ' + csv_log.absolute().name)
-                yield pd.read_csv(csv_log)
+                result[csv_log.stem] = pd.read_csv(csv_log)
         for csv_log in folder_sec.iterdir():
             if csv_log.stat().st_size > 2:
-                yield pd.read_csv(csv_log)
-                print('        ' + csv_log.absolute().name)
+                result[csv_log.stem] = pd.read_csv(csv_log)
+        return result
 
     def __repr__(self) -> str:
         return self.name
 
     def __str__(self) -> str:
         return self.name
-
-
-if __name__ == "__main__":
-    l = LogSession('../CorneringSpeed/2022_09_26_Vadena')
-    print(l)
-    print(l.track_sessions[0].logs[0])
