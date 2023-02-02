@@ -20,6 +20,7 @@ class LogSession:
         print("[pytlm] Loading log session from disk: %s" % self.name)
         self.track_sessions = list(self.__get_track_sessions())
 
+
     def __set_options(self, usr_o: dict) -> None:
         o = {}
 
@@ -29,6 +30,7 @@ class LogSession:
         set_o('subset', None)
         set_o('resample', False)
         set_o('resample_interval_us', 1000)
+        set_o('align', False)
         self.options = o
 
     def __get_track_sessions(self) -> Iterator[TrackSession]:
@@ -61,6 +63,15 @@ class TrackSession:
         print("[pytlm]    Loading track session from disk: %s" % self.name)
         self.logs = self.__get_logs_data()
 
+        if self.options['align']:
+            self.__align_dfs()
+
+    def __align_dfs(self):
+        min_ts = max(l.index.min() for l in self.logs.values())
+        max_ts = min(l.index.max() for l in self.logs.values())
+        print("[pytlm] Aligning data frames only at the start. The ending timestamp is buggy.")
+        self.logs = {k: l[min_ts:] for (k, l) in self.logs.items()}
+        
     def __get_logs_data(self) -> dict[str, Iterator[pd.DataFrame]]:
 
         def csv_to_df(fname):
@@ -79,7 +90,7 @@ class TrackSession:
         folder_pri = self.path / 'Parsed' / 'primary'
         folder_sec = self.path / 'Parsed' / 'secondary'
         folder_gps = self.path / 'Parsed' / 'GPS'
-        ignore_files = ['GPS_GGA.csv']
+        ignore_files = ['GPS_GGA.csv', 'GPS_NAV_HPPOSECEF.csv'] # Files with bugs/deformations
 
         # Note: if files are empty, Pandas will throw an error. For some reason,
         # empty files are larger than 0 bytes, as they probably contain a newline.
@@ -95,9 +106,3 @@ class TrackSession:
 
     def __str__(self) -> str:
         return self.name
-
-
-if __name__ == '__main__':
-    logs = LogSession('../../CorneringSpeed/2022_12_12_Vadena', subset=['Half Skidpad CW [#1] 000']) # , 'Warmup m40 C0 [#1] 003'])
-    resample_resolution_us = 1000
-    print(logs.track_sessions[0].logs['STEERING_ANGLE'])
