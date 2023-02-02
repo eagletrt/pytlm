@@ -52,6 +52,28 @@ print(l.track_sessions[0].logs['STEERING_ANGLE'])
 # 2022-12-12 13:11:51.192226   7.647659
 ```
 
+## Import Options
+
+When importing a log sessions, an options dictionary can be supplied as such:
+
+```python
+tlm_opts = {
+    'subset': ['Half Skidpad CW [#1] 000', 'Warmup m40 C0 [#1] 003'],
+    'resample': True,
+    'resample_interval_us': 1000
+}
+
+logs = LogSession('2022_12_12_Vadena', options=tlm_opt)
+```
+
+Possible options are:
+
+| Name | Type | Description | Default | Example |
+|---|---|------|---|------|
+| `subset` | list of strings | Track sessions to load. Set to `None` if you want them all | `None` | `['Skidpad #0', 'Autocross #10']` |
+| `resample` | bool | If the dataframes should be resampled at a different frequency | `False` | `True` |
+| `resample_interval_us` | integer | Period in microseconds of the resample | `1000` | `500` |
+
 ## Features
 
 - [x] Allow to load only a selected set of logs and not the entire folder tree
