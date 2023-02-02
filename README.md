@@ -24,7 +24,7 @@ print(data.track.sessions)
 # [Straight line [2-step throttle + hard brake] 004, Straight line [2-step throttle + hard brake] 006, ...]
 ```
 
-Each track session has a `log` array of Pandas DataFrames for each CSV
+Each track session has a `logs` array of Pandas DataFrames for each CSV
 
 ```python
 print(l.track_sessions[0].logs['HV_CELLS_TEMP'])
@@ -47,7 +47,7 @@ print(l.track_sessions[0].logs['HV_CELLS_TEMP'])
 
 ## Features
 
-[x] Allow to load only a selected set of logs and not the entire folder tree
-[ ] Use timestamps as dataframe indexes, parsed as a DateTimeIndex instead of Int64Index
-[ ] Resample dataframes at a specified frequency
-[ ] Align dataframes if first/last timestamps do not match
+- [x] Allow to load only a selected set of logs and not the entire folder tree
+- [ ] Use timestamps as dataframe indexes, parsed as a DateTimeIndex instead of Int64Index
+- [ ] Resample dataframes at a specified frequency
+- [ ] Align dataframes if first/last timestamps do not match
