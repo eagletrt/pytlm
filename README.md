@@ -45,6 +45,9 @@ print(l.track_sessions[0].logs['HV_CELLS_TEMP'])
 # [144 rows x 8 columns]
 ```
 
-## To Do
+## Features
 
-- Allow to load only a selected set of logs and not the entire folder tree
+[x] Allow to load only a selected set of logs and not the entire folder tree
+[ ] Use timestamps as dataframe indexes, parsed as a DateTimeIndex instead of Int64Index
+[ ] Resample dataframes at a specified frequency
+[ ] Align dataframes if first/last timestamps do not match
