@@ -1,13 +1,21 @@
-# E-Agle Telemetry Importer
+# PyTLM - E-Agle Telemetry Importer
 
 Python package to ease the import of telemetry track sessions
+
+## Installation
+
+For now, clone the repo and from inside it install as a local package
+
+```shell
+pip install --user .
+```
 
 ## Usage
 
 Import the package
 
 ```python
-import tlmimporter
+import pytlm
 ```
 
 Load a log folder
