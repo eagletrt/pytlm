@@ -82,7 +82,7 @@ class TrackSession:
 
             if self.options['resample']:
                 ri = self.options['resample_interval_us']
-                df = df.resample(str(ri) + 'us').ffill()
+                df = df.resample(str(ri) + 'us').mean().interpolate()
 
             return df
 
